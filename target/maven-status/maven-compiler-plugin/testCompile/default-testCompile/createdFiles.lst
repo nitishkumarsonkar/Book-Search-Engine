@@ -1,1 +1,4 @@
+com/book/search/controller/BookControllerTest.class
 com/book/search/ApplicationTests.class
+com/book/search/repository/BookRepositoryTest.class
+com/book/search/service/BookServiceTest.class
