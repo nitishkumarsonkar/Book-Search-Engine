@@ -1,2 +1,7 @@
-com/book/search/Application.class
+com/book/search/entity/Book.class
+com/book/search/DbImporter.class
 com/book/search/HelloController.class
+com/book/search/repository/BookRepository.class
+com/book/search/service/BookService.class
+com/book/search/Application.class
+com/book/search/controller/BookController.class

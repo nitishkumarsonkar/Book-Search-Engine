@@ -7,11 +7,11 @@ services:
     environment:
       POSTGRES_DB: library
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: adimin123
+      POSTGRES_PASSWORD: admin123
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-
+      - ./db/create_schema.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   pgdata:
