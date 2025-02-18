@@ -1,4 +1,4 @@
-package com.book.search;
+package com.book.search.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
