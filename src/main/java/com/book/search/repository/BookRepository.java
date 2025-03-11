@@ -3,11 +3,13 @@ package com.book.search.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.book.search.entity.Book;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
@@ -18,6 +20,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAll();
 
 //    Get book by ID
-//    Book findById(Long id);
+       @Modifying
+       @Transactional
+    @Query(value = "UPDATE books SET search_vector = to_tsvector('english', title || ' ' || COALESCE(description,'')) WHERE book_id = :bookId", nativeQuery = true)
+    void updateSearchVector(@Param("bookId") Long bookId);
 
 }

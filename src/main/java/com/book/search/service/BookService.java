@@ -64,7 +64,9 @@ public class BookService {
     // Add a new book
     public Book addBook(Book book) {
         try {
-            return bookRepository.save(book);
+            Book savedBook = bookRepository.save(book);
+            bookRepository.updateSearchVector(savedBook.getBookId());
+            return savedBook;
         } catch (Exception e) {
             throw new RuntimeException("Failed to add book", e);
         }
