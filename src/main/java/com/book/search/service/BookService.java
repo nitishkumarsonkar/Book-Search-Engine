@@ -3,6 +3,8 @@ package com.book.search.service;
 import java.util.List;
 
 import com.book.search.dto.BookUpdateDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +14,18 @@ import com.book.search.repository.BookRepository;
 @Service
 public class BookService {
 
+    //adding logger
+    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
+
     @Autowired
     private BookRepository bookRepository;
 
     public List<Book> searchBooks(String searchTerm) {
         if(searchTerm == null || searchTerm.isEmpty()) {
+            logger.warn("Empty search term provided");
             throw new IllegalArgumentException("Search term cannot be empty");
         }
+        logger.info("searching books with search term: {}", searchTerm);
         return bookRepository.searchBooks(searchTerm);
     }
     // Get all books
@@ -55,7 +62,10 @@ public class BookService {
             if (bookUpdateDTO.getFirstPublishDate() != null) existingBook.setFirstPublishDate(bookUpdateDTO.getFirstPublishDate());
             if (bookUpdateDTO.getLikedPercent() != null) existingBook.setLikedPercent(bookUpdateDTO.getLikedPercent());
             if (bookUpdateDTO.getPrice() != null) existingBook.setPrice(bookUpdateDTO.getPrice());
-            return bookRepository.save(existingBook);
+            Book savedBook = bookRepository.save(existingBook);
+            bookRepository.updateSearchVector(savedBook.getBookId());
+            //return bookRepository.save(existingBook);
+            return savedBook;
         } catch (Exception e) {
             throw new RuntimeException("Failed to update book", e);
         }
@@ -64,10 +74,13 @@ public class BookService {
     // Add a new book
     public Book addBook(Book book) {
         try {
+            logger.info("Adding a new book with title: {}", book.getTitle());
             Book savedBook = bookRepository.save(book);
             bookRepository.updateSearchVector(savedBook.getBookId());
+            logger.info("Book added successfully with ID: {}", savedBook.getBookId());
             return savedBook;
         } catch (Exception e) {
+            logger.info("Failed to add book with title: {}", book.getTitle());
             throw new RuntimeException("Failed to add book", e);
         }
     }
