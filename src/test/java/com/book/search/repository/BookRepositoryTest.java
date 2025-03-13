@@ -27,4 +27,12 @@ public class BookRepositoryTest {
         assertThat(books.size()>0);
         // assertThat(books.get(0).getTitle()).containsIgnoringCase(searchTerm);
     }
+
+    // test case for findAll method
+    @Test
+    public void testFindAll() {
+        List<Book> books = bookRepository.findAll();
+        assertThat(books.size()>0);
+    }
+
 }

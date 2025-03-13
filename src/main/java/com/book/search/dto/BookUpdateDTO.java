@@ -21,5 +21,4 @@ public class BookUpdateDTO {
     private BigDecimal likedPercent;
     private BigDecimal price;
 
-    // Getters and Setters
 }

@@ -31,14 +31,17 @@ public class BookService {
     // Get all books
     public List<Book> getAllBooks() {
         try {
+            logger.info("Fetching all books");
             return bookRepository.findAll();
         } catch (Exception e) {
+            logger.error("Failed to fetch all books", e);
             throw new RuntimeException("Failed to fetch all books", e);
         }
     }
     // Get book by ID
     public Book getBookById(Long id) {
         try {
+            logger.info("Fetching book by ID: {}", id);
             return bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Book not found"));
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch book by ID", e);
@@ -48,6 +51,7 @@ public class BookService {
     //Update an existing book
     public Book updateBook(Long id, BookUpdateDTO bookUpdateDTO) {
         try {
+            logger.info("Updating book with ID: {}", id);
             Book existingBook = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Book not found"));
             if (bookUpdateDTO.getTitle() != null) existingBook.setTitle(bookUpdateDTO.getTitle());
             if (bookUpdateDTO.getRating() != null) existingBook.setRating(bookUpdateDTO.getRating());
@@ -67,6 +71,7 @@ public class BookService {
             //return bookRepository.save(existingBook);
             return savedBook;
         } catch (Exception e) {
+            logger.error("Failed to update book with ID: {}", id, e);
             throw new RuntimeException("Failed to update book", e);
         }
     }
